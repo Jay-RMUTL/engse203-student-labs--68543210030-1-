@@ -41,6 +41,7 @@ function DashboardPage() {
     return () => { ignore = true; };
   }, [scenario, reloadKey]);
 
+  // summary คำนวณจาก requests ทั้งหมด ไม่เปลี่ยนตามการค้นหา
   const summary = useMemo(() => ({
     total: requests.length,
     pending: requests.filter((request) => request.status === 'pending').length,
@@ -48,12 +49,12 @@ function DashboardPage() {
     completed: requests.filter((request) => request.status === 'completed').length,
   }), [requests]);
 
+  // กรองตาม status และค้นหาจาก requesterName หรือ details
   const filteredRequests = requests.filter((request) => {
     const matchesStatus = statusFilter === 'all' || request.status === statusFilter;
     const term = searchTerm.trim().toLowerCase();
     const matchesSearch = !term || 
-      (request.requestType && request.requestType.toLowerCase().includes(term)) ||
-      (request.location && request.location.toLowerCase().includes(term)) ||
+      (request.requesterName && request.requesterName.toLowerCase().includes(term)) ||
       (request.details && request.details.toLowerCase().includes(term));
 
     return matchesStatus && matchesSearch;
@@ -118,13 +119,17 @@ function DashboardPage() {
             <div className="search-bar" style={{ marginBottom: '1rem' }}>
               <input
                 type="text"
-                placeholder="ค้นหาคำร้อง..."
+                placeholder="ค้นหาจากผู้แจ้งหรือรายละเอียด"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 data-testid="search-input"
               />
             </div>
-            <RequestList requests={filteredRequests} onDeleteRequest={handleDelete} onMarkDone={handleMarkDone} />
+            {filteredRequests.length === 0 ? (
+              <p className="subtle-empty">ไม่พบคำร้องที่ตรงกับการค้นหา</p>
+            ) : (
+              <RequestList requests={filteredRequests} onDeleteRequest={handleDelete} onMarkDone={handleMarkDone} />
+            )}
           </section>
         </>
       )}
