@@ -15,7 +15,7 @@ function DashboardPage() {
   const [loadState, setLoadState] = useState('idle');
   const [requests, setRequests] = useState([]);
   const [statusFilter, setStatusFilter] = useState('all');
-  // TODO B2: เพิ่ม state สำหรับข้อความค้นหา ที่นี่
+  const [searchTerm, setSearchTerm] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [notice, setNotice] = useState('');
 
@@ -41,7 +41,6 @@ function DashboardPage() {
     return () => { ignore = true; };
   }, [scenario, reloadKey]);
 
-  // แก้ไขบั๊ก 2: เปลี่ยนเงื่อนไข pending จาก 'completed' เป็น 'pending'
   const summary = useMemo(() => ({
     total: requests.length,
     pending: requests.filter((request) => request.status === 'pending').length,
@@ -49,17 +48,22 @@ function DashboardPage() {
     completed: requests.filter((request) => request.status === 'completed').length,
   }), [requests]);
 
-  // แก้ไขบั๊ก 3: เปลี่ยนเงื่อนไขจาก !== เป็น ===
-  const filteredRequests = statusFilter === 'all'
-    ? requests
-    : requests.filter((request) => request.status === statusFilter);
+  const filteredRequests = requests.filter((request) => {
+    const matchesStatus = statusFilter === 'all' || request.status === statusFilter;
+    const term = searchTerm.trim().toLowerCase();
+    const matchesSearch = !term || 
+      (request.requestType && request.requestType.toLowerCase().includes(term)) ||
+      (request.location && request.location.toLowerCase().includes(term)) ||
+      (request.details && request.details.toLowerCase().includes(term));
+
+    return matchesStatus && matchesSearch;
+  });
 
   function handleRetry() {
     if (scenario) setSearchParams({});
     else reload();
   }
 
-  // แก้ไขบั๊ก 4: เปลี่ยนการอัปเดต state เป็น setRequests(nextRequests)
   async function handleDelete(requestId) {
     try {
       const nextRequests = await deleteRequest(requestId);
@@ -101,8 +105,15 @@ function DashboardPage() {
           <SummaryPanel summary={summary} />
           <section className="panel" aria-labelledby="request-list-title">
             <div className="section-heading"><h2 id="request-list-title">รายการคำร้อง</h2><FilterBar value={statusFilter} onFilterChange={setStatusFilter} /></div>
-            {/* TODO B2: วางช่อง <input> ค้นหา ตรงนี้ (เหนือรายการ) แล้วกรองร่วมกับตัวกรองสถานะ */}
-            {/* TODO B3: เพิ่ม onMarkDone={handleMarkDone} และเขียน handleMarkDone ให้เรียก updateRequestStatus แล้ว setRequests เพื่อให้ summary อัปเดต + รอด refresh */}
+            <div className="search-bar" style={{ marginBottom: '1rem' }}>
+              <input
+                type="text"
+                placeholder="ค้นหาคำร้อง..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                data-testid="search-input"
+              />
+            </div>
             <RequestList requests={filteredRequests} onDeleteRequest={handleDelete} />
           </section>
         </>
