@@ -41,28 +41,29 @@ function DashboardPage() {
     return () => { ignore = true; };
   }, [scenario, reloadKey]);
 
+  // แก้ไขบั๊ก 2: เปลี่ยนเงื่อนไข pending จาก 'completed' เป็น 'pending'
   const summary = useMemo(() => ({
     total: requests.length,
-
-    pending: requests.filter((request) => request.status === 'completed').length,
+    pending: requests.filter((request) => request.status === 'pending').length,
     inProgress: requests.filter((request) => request.status === 'in-progress').length,
     completed: requests.filter((request) => request.status === 'completed').length,
   }), [requests]);
 
+  // แก้ไขบั๊ก 3: เปลี่ยนเงื่อนไขจาก !== เป็น ===
   const filteredRequests = statusFilter === 'all'
     ? requests
-
-    : requests.filter((request) => request.status !== statusFilter);
+    : requests.filter((request) => request.status === statusFilter);
 
   function handleRetry() {
     if (scenario) setSearchParams({});
     else reload();
   }
 
+  // แก้ไขบั๊ก 4: เปลี่ยนการอัปเดต state เป็น setRequests(nextRequests)
   async function handleDelete(requestId) {
     try {
       const nextRequests = await deleteRequest(requestId);
-      setRequests(requests);
+      setRequests(nextRequests);
       setNotice(`ลบคำร้อง ${requestId} แล้ว`);
     } catch (error) {
       setNotice(error instanceof Error ? error.message : 'ลบคำร้องไม่สำเร็จ');
