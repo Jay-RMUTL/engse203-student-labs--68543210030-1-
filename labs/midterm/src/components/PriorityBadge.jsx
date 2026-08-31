@@ -1,17 +1,11 @@
 function PriorityBadge({ priority }) {
-  const priorityMap = {
-    high: { label: 'สูง', className: 'badge danger' },
-    medium: { label: 'ปานกลาง', className: 'badge warning' },
-    low: { label: 'ต่ำ', className: 'badge info' },
-  };
-
-  const config = priorityMap[priority?.toLowerCase()] || { label: priority, className: 'badge' };
-
-  return (
-    <span className={config.className} data-testid="priority-badge">
-      {config.label}
-    </span>
-  );
+  if (priority === 'urgent') {
+    return <span className="priority-urgent">เร่งด่วน</span>;
+  }
+  if (priority === 'normal') {
+    return <span className="priority-normal">ปกติ</span>;
+  }
+  return <span className="priority-unknown">ไม่ระบุ</span>;
 }
 
 export default PriorityBadge;
