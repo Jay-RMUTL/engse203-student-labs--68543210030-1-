@@ -6,7 +6,7 @@
 
 | เวลา | งาน (B1/B2/B3/B4) | ถาม AI ว่าอะไร | ใช้คำตอบส่วนไหน | แก้เอง/ตรวจสอบอย่างไร |
 | --- | --- | --- | --- | --- |
-| 12:40 | B1 | ช่วยหาสาเหตุและแก้ไขบั๊กใน DashboardPage.jsx และไฟล์ที่เกี่ยวข้อง | โค้ดที่แก้ state setRequests(nextRequests) และการใส่ key ใน RequestList | ตรวจสอบคำเตือนใน Console และทดสอบกดลบรายการว่าอัปเดตทันทีหรือไม่ |
-| 13:00 | B2 | จะกรอง array ด้วยหลายเงื่อนไขใน React ยังไง | แนวคิดการใช้ filter ซ้อนกันระหว่าง statusFilter และ searchTerm | ปรับเงื่อนไขการค้นหาให้ครอบคลุม requesterName และ details พร้อมใส่ toLowerCase() |
-| 13:20 | B3 | สร้างฟังก์ชัน handleMarkDone ต้องทำยังไง | โค้ดเรียกใช้ updateRequestStatus ร่วมกับ setRequests | กดปุ่มทำเสร็จแล้วกด F5 เพื่อทดสอบว่าข้อมูลคงอยู่ใน LocalStorage จริง |
-| 13:35 | B4 | สร้าง PriorityBadge.jsx ให้รองรับ urgent, normal และ unknown | โค้ดสร้างคอมโพเนนต์และการเช็กเงื่อนไข priority | ทดสอบส่งค่า priority แบบต่างๆ เข้าไปดูการแสดงผล badge บนการ์ด |
+| 11:23 | B1 | หาสาเหตุและแก้ไขบั๊กใน DashboardPage.jsx และไฟล์ที่เกี่ยวข้อง | โค้ดที่แก้ state setRequests(nextRequests) และการใส่ key ใน RequestList | ตรวจสอบคำเตือนใน Console และทดสอบกดลบรายการว่าอัปเดตทันทีหรือไม่ |
+| 11:59 | B2 | จะกรอง array ด้วยหลายเงื่อนไขใน React ยังไง | แนวคิดการใช้ filter ซ้อนกันระหว่าง statusFilter และ searchTerm | ปรับเงื่อนไขการค้นหาให้ครอบคลุม requesterName และ details พร้อมใส่ toLowerCase() |
+| 12:30 | B3 | สร้างฟังก์ชัน handleMarkDone ต้องทำยังไง | โค้ดเรียกใช้ updateRequestStatus ร่วมกับ setRequests | กดปุ่มทำเสร็จแล้วกด F5 เพื่อทดสอบว่าข้อมูลคงอยู่ใน LocalStorage จริง |
+| 13.05 | B4 | สร้าง PriorityBadge.jsx ให้รองรับ urgent, normal และ unknown | โค้ดสร้างคอมโพเนนต์และการเช็กเงื่อนไข priority | ทดสอบส่งค่า priority แบบต่างๆ เข้าไปดูการแสดงผล badge บนการ์ด |
