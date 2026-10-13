@@ -1,6 +1,10 @@
 import { Router } from 'express';
 import * as service from '../services/requestService.js';
 
+if (process.env.NODE_ENV === 'production' && !process.env.JWT_SECRET) {
+  throw new Error('FATAL ERROR: JWT_SECRET is not defined.');
+}
+
 // ⭐ endpoint สำหรับดูผู้ใช้และคำร้องของแต่ละคน
 // ใช้ฐานข้อมูลผ่าน service เหมือน route อื่น — ไม่เปิด connection เอง
 // (เดิมเปิด DatabaseSync ตรงนี้ ทำให้ test ที่ใช้ฐานข้อมูลในหน่วยความจำไม่เห็นข้อมูลชุดเดียวกัน)

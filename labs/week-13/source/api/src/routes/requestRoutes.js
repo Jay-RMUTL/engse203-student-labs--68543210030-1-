@@ -10,6 +10,10 @@ import {
 // นำเข้า validator หากมี (เช่น validateRequest)
 import { validateRequest } from '../middleware/validateRequest.js'; // ปรับตามไฟล์จริงถ้ามี
 
+if (process.env.NODE_ENV === 'production' && !process.env.JWT_SECRET) {
+  throw new Error('FATAL ERROR: JWT_SECRET is not defined.');
+}
+
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {

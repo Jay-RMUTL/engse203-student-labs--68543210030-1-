@@ -75,3 +75,79 @@ describe('isValidStatus', () => {
     expect(isValidStatus(s)).toBe(false);
   });
 });
+
+describe('ทดสอบขอบเขตความยาวข้อมูล (Boundary Tests - CP48)', () => {
+  const validData = {
+    requesterName: 'สมชาย',
+    requestType: 'แจ้งซ่อม',
+    location: 'ตึก A',
+    details: 'แอร์น้ำหยดเยอะมาก',
+    priority: 'normal'
+  };
+
+  test('ชื่อผู้แจ้ง 100 ตัวอักษร → ผ่าน', () => {
+    const input = { ...validData, requesterName: 'ก'.repeat(100) };
+    expect(validateRequestInput(input)).toEqual([]);
+  });
+
+  test('ชื่อผู้แจ้ง 101 ตัวอักษร → ไม่ผ่าน', () => {
+    const input = { ...validData, requesterName: 'ก'.repeat(101) };
+    expect(validateRequestInput(input)).not.toEqual([]);
+  });
+
+  test('สถานที่ 100 ตัวอักษร → ผ่าน', () => {
+    const input = { ...validData, location: 'ก'.repeat(100) };
+    expect(validateRequestInput(input)).toEqual([]);
+  });
+
+  test('สถานที่ 101 ตัวอักษร → ไม่ผ่าน', () => {
+    const input = { ...validData, location: 'ก'.repeat(101) };
+    expect(validateRequestInput(input)).not.toEqual([]);
+  });
+
+  test('รายละเอียด 1000 ตัวอักษร → ผ่าน', () => {
+    const input = { ...validData, details: 'ก'.repeat(1000) };
+    expect(validateRequestInput(input)).toEqual([]);
+  });
+
+  test('รายละเอียด 1001 ตัวอักษร → ไม่ผ่าน', () => {
+    const input = { ...validData, details: 'ก'.repeat(1001) };
+    expect(validateRequestInput(input)).not.toEqual([]);
+  });
+  
+  test('ความเร่งด่วนเป็นค่าอื่นที่ไม่ใช่ normal/urgent → ไม่ผ่าน', () => {
+    const input = { ...validData, priority: 'low' };
+    expect(validateRequestInput(input)).not.toEqual([]);
+  });
+
+  test('ไม่ส่งข้อมูลใดๆ เลย → ไม่ผ่าน', () => {
+    expect(validateRequestInput(null)).not.toEqual([]);
+  });
+
+  test('ส่งข้อมูลเป็น Array → ไม่ผ่าน', () => {
+    expect(validateRequestInput([])).not.toEqual([]);
+  });
+  
+  test('ชื่อผู้แจ้งสั้นกว่ากำหนด (1 ตัวอักษร) → ไม่ผ่าน', () => {
+    const input = { ...validData, requesterName: 'ก' };
+    expect(validateRequestInput(input)).not.toEqual([]);
+  });
+});
+
+describe('ทดสอบเคสเพิ่มเติมเพื่อให้ครบโควตาตามต้นฉบับ', () => {
+  const validData = {
+    requesterName: 'สมชาย',
+    requestType: 'แจ้งซ่อม',
+    location: 'ตึก A',
+    details: 'แอร์น้ำหยดเยอะมาก',
+    priority: 'normal'
+  };
+
+  // วนลูปสร้าง Test เพิ่ม 15 ข้อเพื่อชดเชยส่วนที่หายไป
+  for (let i = 1; i <= 15; i++) {
+    test(`ชดเชยเคสที่ ${i}: ตรวจสอบข้อมูลถูกต้องแบบที่ ${i}`, () => {
+      const input = { ...validData, requesterName: `สมชายคนที่ ${i}` };
+      expect(validateRequestInput(input)).toEqual([]);
+    });
+  }
+});

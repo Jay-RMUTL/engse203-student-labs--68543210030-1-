@@ -30,21 +30,53 @@ export function validateRequestInput(input) {
   }
 
   const errors = [];
-  if (readText(input.requesterName).length < MIN_NAME) {
-    errors.push(`ชื่อผู้แจ้งต้องมีอย่างน้อย ${MIN_NAME} ตัวอักษร`);
+
+  // 1. ตรวจสอบ requesterName (ชื่อผู้แจ้ง)
+  if (typeof input.requesterName !== 'string') {
+    errors.push('ชื่อผู้แจ้งต้องเป็นข้อความ');
+  } else {
+    if (input.requesterName.trim().length < MIN_NAME) {
+      errors.push(`ชื่อผู้แจ้งต้องมีอย่างน้อย ${MIN_NAME} ตัวอักษร`);
+    }
+    if (input.requesterName.length > 100) {
+      errors.push('ชื่อผู้แจ้งต้องไม่เกิน 100 ตัวอักษร');
+    }
   }
+
+  // 2. ตรวจสอบ requestType (ประเภทคำร้อง)
   if (!REQUEST_TYPES.includes(input.requestType)) {
     errors.push('ประเภทคำร้องไม่ถูกต้อง');
   }
-  if (!readText(input.location)) {
-    errors.push('กรุณาระบุสถานที่');
+
+  // 3. ตรวจสอบ location (สถานที่)
+  if (typeof input.location !== 'string') {
+    errors.push('สถานที่ต้องเป็นข้อความ');
+  } else {
+    if (!input.location.trim()) {
+      errors.push('กรุณาระบุสถานที่');
+    }
+    if (input.location.length > 100) {
+      errors.push('สถานที่ต้องไม่เกิน 100 ตัวอักษร');
+    }
   }
-  if (readText(input.details).length < MIN_DETAILS) {
-    errors.push(`รายละเอียดต้องมีอย่างน้อย ${MIN_DETAILS} ตัวอักษร`);
+
+  // 4. ตรวจสอบ details (รายละเอียด)
+  if (typeof input.details !== 'string') {
+    errors.push('รายละเอียดต้องเป็นข้อความ');
+  } else {
+    if (input.details.trim().length < MIN_DETAILS) {
+      errors.push(`รายละเอียดต้องมีอย่างน้อย ${MIN_DETAILS} ตัวอักษร`);
+    }
+    if (input.details.length > 1000) {
+      errors.push('รายละเอียดต้องไม่เกิน 1000 ตัวอักษร');
+    }
   }
+
+  // 5. ตรวจสอบ priority (ความเร่งด่วน)
   if (!PRIORITIES.includes(input.priority)) {
     errors.push('ความเร่งด่วนต้องเป็น normal หรือ urgent');
   }
+
   return errors;
 }
 
@@ -53,7 +85,7 @@ export function isValidStatus(status) {
   return STATUSES.includes(status);
 }
 
-const { body, validationResult } = require('express-validator');
+import { body, validationResult } from 'express-validator';
 
 // ตัวอย่าง Validator สำหรับคำขอที่มีการกำหนดค่าขอบ (Boundary) เช่น จำนวนหรือความยาว
 const validateRequestData = [
@@ -77,10 +109,9 @@ const validateRequestData = [
   }
 ];
 
-module.exports = {
+export {
   validateRequestData
 };
-
 
 /** Week 13 — ข้อมูลเข้าสู่ระบบ ตรวจแค่รูปแบบ ส่วนถูกหรือผิดให้ authService ตัดสิน (ให้มาแล้ว) */
 export function validateLoginInput(input) {

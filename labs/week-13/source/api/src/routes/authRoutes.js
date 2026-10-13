@@ -2,6 +2,10 @@ import { Router } from 'express';
 import * as authService from '../services/authService.js';
 import { validateLoginInput } from '../validators/requestValidator.js';
 
+if (process.env.NODE_ENV === 'production' && !process.env.JWT_SECRET) {
+  throw new Error('FATAL ERROR: JWT_SECRET is not defined.');
+}
+
 // route ให้มาแล้ว — งานหลักอยู่ใน services/authService.js (CP50)
 const router = Router();
 

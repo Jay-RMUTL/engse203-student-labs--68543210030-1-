@@ -12,6 +12,10 @@
  */
 import { scryptSync, randomBytes, timingSafeEqual } from 'crypto';
 
+if (process.env.NODE_ENV === 'production' && !process.env.JWT_SECRET) {
+  throw new Error('FATAL ERROR: JWT_SECRET is not defined.');
+}
+
 /**
  * เข้ารหัสรหัสผ่านด้วย scrypt
  * รูปแบบผลลัพธ์: scrypt$${salt}$${hash}
