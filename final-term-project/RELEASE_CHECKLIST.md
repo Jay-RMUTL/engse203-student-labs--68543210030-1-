@@ -2,7 +2,7 @@
 
 ## Backend
 - [x] API unit tests ผ่านครบ 12 ข้อ
-- [x] API integration tests ผ่านครบ 14 ข้อ
+- [x] API integration tests ผ่านครบ 16 ข้อ
 - [x] Existing API tests ผ่านครบ 7 ข้อ
 - [x] Health endpoint ตรวจสอบฐานข้อมูลได้
 - [x] ตรวจสอบ JWT authentication และ Staff authorization
@@ -24,3 +24,4 @@
 - หลัง Deploy ให้รัน npm run check -- --online
 - หลัง Deploy ให้บันทึก Production URL จริงลง README.md
 - ตรวจสอบผล CI บน GitHub หลังตั้งค่า Repository
+
