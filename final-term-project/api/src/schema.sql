@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS print_shops (
+﻿CREATE TABLE IF NOT EXISTS print_shops (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     location TEXT NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS print_jobs (
     copies INTEGER NOT NULL CHECK (copies BETWEEN 1 AND 20),
     color_mode TEXT NOT NULL,
     shop_id INTEGER NOT NULL,
-    status TEXT NOT NULL DEFAULT 'queued',
+    status TEXT NOT NULL DEFAULT 'queued' CHECK (status IN ('queued', 'printing', 'ready', 'picked-up')),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (shop_id) REFERENCES print_shops(id)
 );

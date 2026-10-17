@@ -1,4 +1,4 @@
-﻿const express = require('express');
+const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
@@ -43,7 +43,7 @@ db.serialize(() => {
     copies INTEGER NOT NULL CHECK (copies BETWEEN 1 AND 20),
     color_mode TEXT NOT NULL,
     shop_id INTEGER NOT NULL,
-    status TEXT NOT NULL DEFAULT 'queued',
+    status TEXT NOT NULL DEFAULT 'queued' CHECK (status IN ('queued', 'printing', 'ready', 'picked-up')),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (shop_id) REFERENCES print_shops(id)
   )`, () => {
@@ -58,7 +58,7 @@ db.serialize(() => {
         const sampleJobs = [
           ['User One', 'doc1.pdf', 5, 1, 'bw', 1, 'queued'],
           ['User Two', 'doc2.pdf', 10, 2, 'color', 1, 'printing'],
-          ['User Three', 'doc3.pdf', 3, 1, 'bw', 1, 'completed'],
+          ['User Three', 'doc3.pdf', 3, 1, 'bw', 1, 'ready'],
           ['User Four', 'doc4.pdf', 15, 3, 'color', 1, 'queued'],
           ['User Five', 'doc5.pdf', 8, 1, 'bw', 1, 'queued']
         ];
@@ -134,11 +134,18 @@ app.get('/api/print-shops', (req, res) => {
 // 4. Print Jobs API (GET - List & Filter by status)
 app.get('/api/print-jobs', (req, res) => {
   const { status } = req.query;
-  let query = 'SELECT * FROM print_jobs';
-  let params = [];
+  let query = `
+    SELECT print_jobs.*,
+           print_shops.name AS shop_name,
+           print_shops.location AS shop_location,
+           print_shops.building AS shop_building
+    FROM print_jobs
+    JOIN print_shops ON print_jobs.shop_id = print_shops.id
+  `;
+  const params = [];
 
   if (status) {
-    query += ' WHERE status = ?';
+    query += ' WHERE print_jobs.status = ?';
     params.push(status);
   }
 
@@ -151,7 +158,17 @@ app.get('/api/print-jobs', (req, res) => {
 // 5. Print Jobs API (GET - One by ID)
 app.get('/api/print-jobs/:id', (req, res) => {
   const { id } = req.params;
-  db.get('SELECT * FROM print_jobs WHERE id = ?', [id], (err, row) => {
+  const query = `
+    SELECT print_jobs.*,
+           print_shops.name AS shop_name,
+           print_shops.location AS shop_location,
+           print_shops.building AS shop_building
+    FROM print_jobs
+    JOIN print_shops ON print_jobs.shop_id = print_shops.id
+    WHERE print_jobs.id = ?
+  `;
+
+  db.get(query, [id], (err, row) => {
     if (err) return res.status(500).json({ error: err.message });
     if (!row) return res.status(404).json({ error: 'Print job not found' });
     res.json(row);
@@ -178,7 +195,8 @@ app.post('/api/print-jobs', (req, res) => {
 app.put('/api/print-jobs/:id', authenticateToken, requireStaff, (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
-  if (typeof status !== 'string' || status.trim() === '') {
+  const allowedStatuses = ['queued', 'printing', 'ready', 'picked-up'];
+  if (typeof status !== 'string' || !allowedStatuses.includes(status)) {
     return res.status(400).json({ error: 'Invalid status' });
   }
 
@@ -240,4 +258,3 @@ app.close = (callback) => {
 };
 
 module.exports = app;
-

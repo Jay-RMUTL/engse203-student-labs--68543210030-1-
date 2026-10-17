@@ -1,4 +1,4 @@
-﻿import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vitest';
 const { validateCreatePrintJob } = require('../../src/print-job-validation');
 
 const validJob = {
@@ -67,5 +67,22 @@ describe('Print job validation unit tests', () => {
     expect(validateCreatePrintJob({ ...validJob, copies: 21 }))
       .toBe('Invalid pages (1-200) or copies (1-20)');
   });
-});
 
+  it('accepts minimum copies value', () => {
+    expect(validateCreatePrintJob({ ...validJob, copies: 1 })).toBeNull();
+  });
+
+  it('accepts maximum copies value', () => {
+    expect(validateCreatePrintJob({ ...validJob, copies: 20 })).toBeNull();
+  });
+
+  it('rejects copies below minimum', () => {
+    expect(validateCreatePrintJob({ ...validJob, copies: 0 }))
+      .toBe('Invalid pages (1-200) or copies (1-20)');
+  });
+
+  it('rejects fractional copies', () => {
+    expect(validateCreatePrintJob({ ...validJob, copies: 1.5 }))
+      .toBe('Invalid pages (1-200) or copies (1-20)');
+  });
+});
