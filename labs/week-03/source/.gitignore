@@ -1,0 +1,9 @@
+node_modules
+docs
+.env
+.DS_Store
+
+# Playwright generated output
+test-results/
+playwright-report/
+blob-report/

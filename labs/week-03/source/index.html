@@ -1,0 +1,121 @@
+﻿<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#123047" />
+  <title>Campus Service Request | ENGSE203 LAB 3</title>
+  <script type="module" src="./src/main.js"></script>
+</head>
+<body>
+  <header class="hero">
+    <div class="container hero-inner">
+      <p class="eyebrow">ENGSE203 · LAB 3</p>
+      <h1>Campus Service Request</h1>
+      <p>ระบบแจ้งคำขอบริการภายในมหาวิทยาลัย</p>
+    </div>
+  </header>
+
+  <main class="container page-grid">
+    <section class="panel" aria-labelledby="form-title">
+      <div class="section-heading">
+        <p class="eyebrow">NEW REQUEST</p>
+        <h2 id="form-title">สร้างคำขอบริการ</h2>
+        <p class="muted">กรอกข้อมูลให้ครบถ้วนก่อนส่งคำขอ</p>
+      </div>
+
+      <form id="request-form" novalidate>
+        <div class="field">
+          <label for="requester-name">ชื่อผู้แจ้ง <span aria-hidden="true">*</span></label>
+          <input
+            id="requester-name"
+            name="requesterName"
+            type="text"
+            autocomplete="name"
+            placeholder="เช่น นรินทร์ ไสวจำเนียรกุล"
+            required
+            minlength="2"
+            maxlength="80"
+            aria-describedby="name-hint name-error"
+          />
+          <small id="name-hint" class="hint">ชื่ออย่างน้อย 2 ตัวอักษร</small>
+          <small id="name-error" class="field-error"></small>
+        </div>
+
+        <div class="field">
+          <label for="request-type">ประเภทคำขอ <span aria-hidden="true">*</span></label>
+          <select
+            id="request-type"
+            name="requestType"
+            required
+            aria-describedby="type-error"
+          >
+            <option value="">-- เลือกประเภทบริการ --</option>
+            <option value="IT Support">IT Support / ปัญหาคอมพิวเตอร์</option>
+            <option value="Building">อาคารและสถานที่</option>
+            <option value="Network">อินเทอร์เน็ตและเครือข่าย</option>
+            <option value="Equipment">อุปกรณ์การเรียน</option>
+            <option value="Other">อื่น ๆ</option>
+          </select>
+          <small id="type-error" class="field-error"></small>
+        </div>
+
+        <div class="field">
+          <label for="request-details">รายละเอียด <span aria-hidden="true">*</span></label>
+          <textarea
+            id="request-details"
+            name="details"
+            rows="5"
+            minlength="10"
+            maxlength="500"
+            placeholder="อธิบายปัญหาหรือบริการที่ต้องการ..."
+            required
+            aria-describedby="details-hint details-error"
+          ></textarea>
+          <div class="field-meta">
+            <small id="details-hint" class="hint">อย่างน้อย 10 ตัวอักษร สูงสุด 500 ตัวอักษร</small>
+            <small id="character-count" class="hint">0/500</small>
+          </div>
+          <small id="details-error" class="field-error"></small>
+        </div>
+
+        <button type="submit" class="submit-button">ส่งคำขอบริการ</button>
+        <p id="form-status" class="status" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <aside class="panel preview-panel" aria-labelledby="preview-title">
+      <p class="eyebrow">PREVIEW</p>
+      <h2 id="preview-title">ตัวอย่างคำขอ</h2>
+      <p class="muted">ข้อมูลจะเปลี่ยนตามที่คุณกรอก</p>
+
+      <dl id="preview" aria-live="polite">
+        <div>
+          <dt>ชื่อผู้แจ้ง</dt>
+          <dd id="preview-name">ยังไม่ระบุชื่อ</dd>
+        </div>
+        <div>
+          <dt>ประเภทบริการ</dt>
+          <dd id="preview-type">ยังไม่เลือกประเภท</dd>
+        </div>
+        <div>
+          <dt>รายละเอียด</dt>
+          <dd id="preview-details">ยังไม่มีรายละเอียด</dd>
+        </div>
+      </dl>
+
+      <div class="list-heading">
+        <h3>คำขอที่ส่งแล้ว</h3>
+        <span id="request-count" class="count">0 รายการ</span>
+      </div>
+      <ul id="request-list" class="request-list" aria-live="polite">
+        <li id="empty-list" class="empty-state">ยังไม่มีคำขอ ลองส่งคำขอแรกของคุณ</li>
+      </ul>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <div class="container">ENGSE203 · Responsive UI &amp; Form Interaction</div>
+  </footer>
+</body>
+</html>
