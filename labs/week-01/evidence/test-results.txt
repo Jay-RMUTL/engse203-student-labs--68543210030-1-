@@ -1,0 +1,12 @@
+﻿LAB 01 Test Results
+
+Command: npm --prefix labs/week-01/source install
+Result: PASS - up to date, 0 vulnerabilities
+
+Command: npm --prefix labs/week-01/source run start
+Result: PASS
+Hello นรินทร์ ไสวจำเนียรกุล (68543210030-1) | OS: win32 | Node: v24.20.0
+
+Command: npm --prefix labs/week-01/source run check
+Result: PASS
+LAB 01 file structure check: PASS

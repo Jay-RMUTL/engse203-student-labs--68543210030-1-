@@ -1,0 +1,16 @@
+﻿LAB 01 - Developer Environment Evidence
+Student: นรินทร์ ไสวจำเนียรกุล
+Student ID: 68543210030-1
+Date: 2026-10-18 20:23:05
+
+Node.js:
+v24.20.0
+
+npm:
+11.19.0
+
+Git:
+git version 2.55.0.windows.3
+
+Current branch:
+lab/week-01
