@@ -1,5 +1,9 @@
 import { verifyToken } from '../services/authService.js';
 
+if (process.env.NODE_ENV === 'production' && !process.env.JWT_SECRET) {
+  throw new Error('FATAL ERROR: JWT_SECRET is not defined.');
+}
+
 /**
  * 🏫 TODO W13-AUTH (CP51) — ป้องกัน route ด้วย JWT
  */

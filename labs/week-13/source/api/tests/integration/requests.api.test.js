@@ -2,7 +2,7 @@ import { describe, test, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import { createApp } from '../../src/app.js';
 import { loadSeed } from '../../src/services/requestService.js';
-import { loginAsStaff } from '../helpers/auth.js';
+import { loginAsStaff, tokenFor } from '../helpers/auth.js';
 
 /**
  * Integration test — ยิง HTTP จริงผ่านทุกชั้น: route → controller → service → SQLite
@@ -83,16 +83,34 @@ describe('PUT /api/requests/:id', () => {
     expect(r.status).toBe(200);
     expect(r.body.status).toBe('completed');
   });
+  
   test('สถานะนอกรายการ → 400', async () => {
     const token = await loginAsStaff(app);
     const r = await request(app).put('/api/requests/REQ-001').set('Authorization', `Bearer ${token}`).send({ status: 'done' });
     expect(r.status).toBe(400);
   });
+  
   // 🐞 regression test — BUG #3: เปลี่ยนสถานะคำร้องที่ไม่มีอยู่ ได้ 500
   test('คำร้องที่ไม่มีอยู่ → 404 (ไม่ใช่ 500)', async () => {
     const token = await loginAsStaff(app);
     const r = await request(app).put('/api/requests/REQ-999').set('Authorization', `Bearer ${token}`).send({ status: 'completed' });
     expect(r.status).toBe(404);
+  });
+
+  test('ไม่มี token → 401', async () => {
+    const r = await request(app)
+      .put('/api/requests/REQ-001')
+      .send({ status: 'completed' });
+    expect(r.status).toBe(401);
+  });
+
+  test('ไม่ใช่เจ้าหน้าที่ → 403', async () => {
+    const userToken = tokenFor('user');
+    const r = await request(app)
+      .put('/api/requests/REQ-001')
+      .set('Authorization', `Bearer ${userToken}`)
+      .send({ status: 'completed' });
+    expect(r.status).toBe(403);
   });
 });
 

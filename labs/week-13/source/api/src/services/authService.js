@@ -3,6 +3,10 @@ import { config } from '../config.js';
 import { findUserByEmail } from './requestService.js';
 import { verifyPassword } from '../utils/password.js';
 
+if (process.env.NODE_ENV === 'production' && !process.env.JWT_SECRET) {
+  throw new Error('FATAL ERROR: JWT_SECRET is not defined.');
+}
+
 export function login(email, password) {
   const user = findUserByEmail(email);
 

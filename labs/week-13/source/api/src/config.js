@@ -9,6 +9,10 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+if (process.env.NODE_ENV === 'production' && !process.env.JWT_SECRET) {
+  throw new Error('FATAL ERROR: JWT_SECRET is not defined.');
+}
+
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const API_ROOT = path.resolve(HERE, '..');
 

@@ -2,6 +2,10 @@ import { config } from './config.js';
 import { createApp } from './app.js';
 import { loadSeed } from './services/requestService.js';
 
+if (process.env.NODE_ENV === 'production' && !process.env.JWT_SECRET) {
+  throw new Error('FATAL ERROR: JWT_SECRET is not defined.');
+}
+
 await loadSeed();
 const app = createApp();
 

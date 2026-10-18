@@ -10,6 +10,10 @@ import healthRoutes from './routes/healthRoutes.js';
 import authRoutes from './routes/authRoutes.js'; // นำเข้า authRoutes สำหรับ CP50
 import { errorHandler, notFound } from './middleware/errorHandler.js';
 
+if (process.env.NODE_ENV === 'production' && !process.env.JWT_SECRET) {
+  throw new Error('FATAL ERROR: JWT_SECRET is not defined.');
+}
+
 export function createApp() {
   const app = express();
 

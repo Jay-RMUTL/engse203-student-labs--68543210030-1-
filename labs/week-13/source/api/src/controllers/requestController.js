@@ -1,6 +1,10 @@
 import * as service from '../services/requestService.js';
 import { isValidStatus } from '../validators/requestValidator.js';
 
+if (process.env.NODE_ENV === 'production' && !process.env.JWT_SECRET) {
+  throw new Error('FATAL ERROR: JWT_SECRET is not defined.');
+}
+
 /** controller รู้จัก req/res และตัดสิน status code — แต่ไม่จัดการข้อมูลเอง */
 
 export function listRequests(req, res) {

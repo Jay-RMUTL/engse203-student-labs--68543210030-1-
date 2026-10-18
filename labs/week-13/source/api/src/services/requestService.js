@@ -4,6 +4,10 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { hashPassword } from '../utils/password.js';
 
+if (process.env.NODE_ENV === 'production' && !process.env.JWT_SECRET) {
+  throw new Error('FATAL ERROR: JWT_SECRET is not defined.');
+}
+
 /**
  * Week 10 — เปลี่ยนจากอ่านไฟล์ JSON เป็นฐานข้อมูล SQLite
  *

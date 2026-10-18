@@ -1,5 +1,9 @@
 import { config } from '../config.js';
 
+if (process.env.NODE_ENV === 'production' && !process.env.JWT_SECRET) {
+  throw new Error('FATAL ERROR: JWT_SECRET is not defined.');
+}
+
 /** error ที่เรารู้สาเหตุและอยากกำหนด status เอง */
 export class AppError extends Error {
   constructor(message, status = 500) {

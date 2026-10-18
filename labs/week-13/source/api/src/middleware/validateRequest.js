@@ -1,5 +1,9 @@
 import { validateRequestInput } from '../validators/requestValidator.js';
 
+if (process.env.NODE_ENV === 'production' && !process.env.JWT_SECRET) {
+  throw new Error('FATAL ERROR: JWT_SECRET is not defined.');
+}
+
 /**
  * middleware บาง ๆ — เรียก pure function แล้วตัดสินว่าจะไปต่อหรือตอบ 400
  * กฎทั้งหมดอยู่ใน validators/requestValidator.js (ทดสอบแยกได้ด้วย unit test)
