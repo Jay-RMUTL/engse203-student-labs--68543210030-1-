@@ -27,6 +27,16 @@ export const createRequest = (newReqData) => {
   return newItem
 }
 
+export const updateRequestStatus = (id, status) => {
+  let requests = getAllRequests()
+  const item = requests.find(r => r.id === Number(id))
+  if (!item) return null
+
+  item.status = status || item.status
+  fs.writeFileSync(filePath, JSON.stringify(requests, null, 2), "utf8")
+  return item
+}
+
 export const deleteRequest = (id) => {
   let requests = getAllRequests()
   const index = requests.findIndex(r => r.id === Number(id))

@@ -34,6 +34,19 @@ export const createRequest = (req, res) => {
   }
 }
 
+export const updateStatus = (req, res) => {
+  try {
+    const { status } = req.body
+    const updated = requestService.updateRequestStatus(req.params.id, status)
+    if (!updated) {
+      return res.status(404).json({ success: false, message: "ไม่พบข้อมูลที่ต้องการอัปเดต" })
+    }
+    res.json({ success: true, message: "อัปเดตสถานะสำเร็จ", data: updated })
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message })
+  }
+}
+
 export const removeRequest = (req, res) => {
   try {
     const deleted = requestService.deleteRequest(req.params.id)
