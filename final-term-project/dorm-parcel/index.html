@@ -1,0 +1,53 @@
+﻿<!doctype html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ระบบจัดการพัสดุหอพัก</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div><h1>📦 ระบบจัดการพัสดุหอพัก</h1><p>จัดการพัสดุเข้าและติดตามการรับของผู้พัก</p></div>
+</header>
+<main>
+  <section class="stats">
+    <article><span>พัสดุทั้งหมด</span><strong id="total">0</strong></article>
+    <article><span>รอรับพัสดุ</span><strong id="pending">0</strong></article>
+    <article><span>รับแล้ว</span><strong id="received">0</strong></article>
+    <article><span>ค้างเกิน 3 วัน</span><strong id="overdue">0</strong></article>
+  </section>
+  <section class="panel">
+    <div class="heading"><div><h2>รายการพัสดุ</h2><p>ค้นหา เพิ่มรายการ และบันทึกสถานะ</p></div>
+      <button id="add">+ เพิ่มพัสดุ</button>
+    </div>
+    <div class="filters">
+      <input id="search" placeholder="ค้นหาเลขพัสดุ ชื่อ หรือห้องพัก">
+      <select id="filter"><option value="all">ทุกสถานะ</option><option value="pending">รอรับ</option><option value="received">รับแล้ว</option></select>
+    </div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>เลขพัสดุ</th><th>ผู้รับ / ห้อง</th><th>บริษัทขนส่ง</th><th>วันที่เข้า</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table></div>
+    <p id="empty" hidden>ไม่พบรายการพัสดุ</p>
+  </section>
+</main>
+<dialog id="formDialog">
+  <form id="parcelForm">
+    <h2 id="formTitle">เพิ่มพัสดุ</h2>
+    <input id="id" type="hidden">
+    <label>เลขพัสดุ *<input id="tracking" required></label>
+    <label>ชื่อผู้รับ *<input id="resident" required></label>
+    <label>ห้องพัก *<input id="room" required></label>
+    <label>เบอร์โทรศัพท์<input id="phone"></label>
+    <label>บริษัทขนส่ง *
+      <select id="courier" required><option value="">เลือกบริษัทขนส่ง</option><option>ไปรษณีย์ไทย</option><option>Flash Express</option><option>Kerry Express</option><option>J&T Express</option><option>อื่น ๆ</option></select>
+    </label>
+    <label>วันที่พัสดุเข้า *<input id="arrival" type="date" required></label>
+    <label>หมายเหตุ<input id="note"></label>
+    <div class="actions"><button type="button" id="cancel" class="secondary">ยกเลิก</button><button type="submit">บันทึก</button></div>
+  </form>
+</dialog>
+<script src="app.js"></script>
+</body>
+</html>

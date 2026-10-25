@@ -1,0 +1,18 @@
+﻿services:
+  - type: web
+    name: t15-print-jobs-api
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm install --prefix api
+    startCommand: npm start --prefix api
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: STAFF_EMAIL
+        sync: false
+      - key: STAFF_PASSWORD
+        sync: false

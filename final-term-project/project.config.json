@@ -1,0 +1,38 @@
+{
+  "teamName": "T15-PrintJobs",
+  "section": 1,
+  "topic": "T15",
+  "members": [
+    {
+      "name": "นรินทร์ ไสวจำเนียรกุล",
+      "studentId": "68543210030-1",
+      "github": "Narin",
+      "role": "be+devops"
+    },
+    {
+      "name": "ปริยากร ธารพรศรี",
+      "studentId": "68543210078-0",
+      "github": "Pari",
+      "role": "fe"
+    }
+  ],
+  "api": {
+    "resource": "/api/print-jobs",
+    "existingId": 1,
+    "validSample": {
+      "customer_name": "Test User",
+      "file_name": "document.pdf",
+      "pages": 10,
+      "copies": 2,
+      "color_mode": "bw",
+      "shop_id": 1
+    },
+    "statusUpdate": {
+      "status": "printing"
+    }
+  },
+  "devStaff": {
+    "email": "staff@printshop.local",
+    "password": "password123"
+  }
+}
