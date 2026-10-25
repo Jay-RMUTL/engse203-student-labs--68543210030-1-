@@ -1,0 +1,5 @@
+[
+  { "id": 1, "title": "แจ้งซ่อมโปรเจคเตอร์ห้อง Lab 301", "category": "Hardware", "status": "รอดำเนินการ" },
+  { "id": 2, "title": "ขอสิทธิ์เข้าใช้งานฐานข้อมูลกลาง", "category": "Network", "status": "กำลังดำเนินการ" },
+  { "id": 3, "title": "ติดตั้งโปรแกรม Node.js เพิ่มเติม", "category": "Software", "status": "เสร็จสิ้น" }
+]
